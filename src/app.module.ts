@@ -6,6 +6,8 @@ import { BoardService } from './board/board.service';
 import { BoardModule } from './board/board.module';
 import { ConfigModule } from '@nestjs/config';
 import configuration from './config/configuration';
+import { ServeStaticModule } from '@nestjs/serve-static';
+import { join } from 'path';
 
 @Module({
   imports: [
@@ -14,6 +16,9 @@ import configuration from './config/configuration';
       load: [configuration],
       isGlobal: true,
       ignoreEnvFile: true,
+    }),
+    ServeStaticModule.forRoot({
+      rootPath: join(__dirname, '..', 'src', 'public'),
     }),
   ],
   controllers: [AppController, BoardController],

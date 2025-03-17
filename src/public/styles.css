@@ -2,6 +2,7 @@ body {
   margin: 0;
   display: flex;
   flex-direction: column;
+  height: 100vh;
 }
 
 header {
@@ -13,6 +14,11 @@ header {
   justify-content: space-between;
   align-items: center;
   box-sizing: border-box;
+}
+
+.main-container {
+  display: flex;
+  flex: 1;
 }
 
 .header-left h1 {
@@ -64,4 +70,5 @@ header {
 .content {
   flex: 1;
   padding: 1rem;
+  overflow: auto;
 }

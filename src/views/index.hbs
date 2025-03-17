@@ -3,6 +3,7 @@
 <head>
   <title>My NestJS App</title>
   <link rel="stylesheet" type="text/css" href="styles.css">
+  <script type="module" src="index.js"></script>
 </head>
 <body>
   <header>
@@ -11,9 +12,9 @@
     </div>
     <div class="header-center">
       <ul class="nav-list">
-        <li><a href="#">Home</a></li>
-        <li><a href="#">About</a></li>
-        <li><a href="#">Contact</a></li>
+        <li><a href="#" id="header/home">Home</a></li>
+        <li><a href="#" id="header/about">About</a></li>
+        <li><a href="#" id="header/contact">Contact</a></li>
       </ul>
     </div>
     <div class="header-right">
@@ -21,16 +22,19 @@
       <a href="#">Sign Up</a>
     </div>
   </header>
-  <div class="sidebar">
-    <h2>Sidebar</h2>
-    <ul>
-      <li><a href="#">Link 1</a></li>
-      <li><a href="#">Link 2</a></li>
-      <li><a href="#">Link 3</a></li>
-    </ul>
-  </div>
-  <div class="content">
-    <h1>Welcome to my NestJS app!</h1>
+  <div class="main-container">
+    <div class="sidebar">
+      <h2>Sidebar</h2>
+      <ul>
+        <li><a href="#">Link 1</a></li>
+        <li><a href="#">Link 2</a></li>
+        <li><a href="#">Link 3</a></li>
+      </ul>
+    </div>
+    <div class="content" id="content">
+      뭐야 돌려줘요
+      {{{body}}}
+    </div>
   </div>
 </body>
 </html>

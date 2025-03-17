@@ -18,4 +18,10 @@
     "strictBindCallApply": false,
     "noFallthroughCasesInSwitch": false
   },
+  "exclude": [
+    "dist"
+  ],
+  "include": [
+    "src/**/*.ts"
+  ]
 }

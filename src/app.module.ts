@@ -8,7 +8,10 @@ import { ConfigModule } from '@nestjs/config';
 import configuration from './config/configuration';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
-import { LoggerMiddleware } from './middleware/logger.middleware';
+// import { LoggerMiddleware } from './middleware/logger.middleware';
+import { HeaderController } from './header/header.controller';
+import { HeaderService } from './header/header.service';
+import { HeaderModule } from './header/header.module';
 
 @Module({
   imports: [
@@ -19,16 +22,17 @@ import { LoggerMiddleware } from './middleware/logger.middleware';
       ignoreEnvFile: true,
     }),
     ServeStaticModule.forRoot({
-      rootPath: join(__dirname, '..', 'src', 'public'),
+      rootPath: join(__dirname, '..', 'dist', 'public'),
     }),
+    HeaderModule,
   ],
-  controllers: [AppController, BoardController],
-  providers: [AppService, BoardService],
+  controllers: [AppController, BoardController, HeaderController],
+  providers: [AppService, BoardService, HeaderService],
 })
 export class AppModule {
-  configure(consumer: MiddlewareConsumer) {
-    consumer
-      .apply(LoggerMiddleware)
-      .forRoutes({ path: '*', method: RequestMethod.ALL });
-  }
+  // configure(consumer: MiddlewareConsumer) {
+  //   consumer
+  //     .apply(LoggerMiddleware)
+  //     .forRoutes({ path: '*', method: RequestMethod.ALL });
+  // }
 }

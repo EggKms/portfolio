@@ -1,5 +1,6 @@
-import { Controller, Get, Logger, Render } from '@nestjs/common';
+import { Controller, Get, Logger, Render, Req } from '@nestjs/common';
 import { AppService } from './app.service';
+import { Request } from 'express';
 
 @Controller()
 export class AppController {
@@ -9,7 +10,11 @@ export class AppController {
 
   @Get()
   @Render('index')
-  getHello(): void {
-    this.logger.log('Rendering index.hbs');
+  getHello(@Req() req: Request): void {
+    const clientIp = req.ip;
+    const userAgent = req.headers['user-agent'];
+    this.logger.log(
+      `Rendering index.hbs for IP: ${clientIp}, User Agent: ${userAgent}`,
+    );
   }
 }

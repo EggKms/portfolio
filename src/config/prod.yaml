@@ -10,3 +10,10 @@ db:
 
   sqlite:
     database: 'sqlite.db'
+    
+  mariadb:
+    url: 'localhost'
+    port: 3306
+    username: 'root'
+    password: '1q2w3e4r'
+    database: 'portfolio'

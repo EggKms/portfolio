@@ -1,10 +1,8 @@
-import { loadContent } from './index';
-
 document.addEventListener('DOMContentLoaded', () => {
   bindEventsToDynamicContent();
 });
 // 동적으로 로드된 콘텐츠에 이벤트 리스너를 추가하는 함수
-export function bindEventsToDynamicContent() {
+function bindEventsToDynamicContent() {
   bindSignUpEvent();
   bindLoginEvent();
 }

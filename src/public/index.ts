@@ -1,5 +1,4 @@
-import { bindEventsToDynamicContent } from './user';
-
+// import loadContent from './loadContent.js';
 document.addEventListener('DOMContentLoaded', () => {
   console.log('DOM loaded');
 
@@ -13,14 +12,13 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 });
 
-export function loadContent(id: string) {
+function loadContent(id: string) {
   const contentDiv = document.getElementById('content');
   fetch(`/${id}`)
     .then((response) => response.text())
     .then((data) => {
       if (contentDiv) {
         contentDiv.innerHTML = data;
-        bindEventsToDynamicContent(); // 동적으로 로드된 콘텐츠에 이벤트 리스너 추가
       }
     })
     .catch((error) => {

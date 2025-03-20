@@ -72,3 +72,10 @@ header {
   padding: 1rem;
   overflow: auto;
 }
+
+.content-section {
+  display: none;
+}
+.content-section.active {
+  display: block;
+}

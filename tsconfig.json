@@ -15,16 +15,18 @@
     "strictNullChecks": true,
     "forceConsistentCasingInFileNames": true,
     "noImplicitAny": false,
-    "strictBindCallApply": false,
-    "noFallthroughCasesInSwitch": false,
+    // "strictBindCallApply": false,
+    // "noFallthroughCasesInSwitch": false,
     "esModuleInterop": true,
+    "importHelpers": true,
     "moduleResolution": "node",
-    "resolveJsonModule": true,
-  },
+},
   "exclude": [
     "dist"
   ],
   "include": [
-    "src/**/*.ts"
+    "src/**/*.ts",
+    // "src/public/loadContent.ts",
+    // "webpack.config.ts"
   ]
 }

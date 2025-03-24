@@ -4,7 +4,10 @@
   <title>My NestJS App</title>
   <link rel="stylesheet" type="text/css" href="styles.css">
   <script type="module" src="index.js"></script>
-  <script src="user.js"></script>
+  <script type="module" src="user.js"></script>
+  <style>
+    
+  </style>
 </head>
 <body>
   <header>
@@ -33,8 +36,53 @@
       </ul>
     </div>
     <div class="content" id="content">
-      뭐야 돌려줘요
-      {{{body}}}
+      <div id="home" class="content-section active">
+        <div class="section">
+          <h1>Home</h1>
+          <p>Welcome to the home page of the NestJS app.</p>
+        </div>
+      </div>
+      <div id="about" class="content-section">
+        <div class="section">
+          <h1>About Us</h1>
+          <p>This is the about page of the NestJS app.</p>
+        </div>
+      </div>
+      <div id="contact" class="content-section">
+        <div class="section">
+          <h1>Contact Us</h1>
+          <p>Feel free to contact us if you have any questions or concerns.</p>
+        </div>
+      </div>
+      <div id="login" class="content-section">
+        <form action="/user/login" method="post">
+          <div>
+            <label for="email">Email:</label>
+            <input type="email" id="login_email" name="email" required>
+          </div>
+          <div>
+            <label for="password">Password:</label>
+            <input type="password" id="login_password" name="password" required>
+          </div>
+          <button type="submit" id="login">Login</button>
+        </form>
+      </div>
+      <div id="sign" class="content-section">
+        <form action="/user/sign" method="post">
+          <div>
+            <label for="ID">ID:</label>
+            <input type="text" id="id" name="id" required>
+          </div>
+          <div>
+            <label for="email">Email:</label>
+            <input type="email" id="sign_email" name="email" required>
+          </div>
+          <div>
+            <label for="password">Password:</label>
+            <input type="password" id="sign_password" name="password" required>
+          </div>
+        <button type="button" id="signUp">Sign Up</button>
+      </form></div>
     </div>
   </div>
 </body>

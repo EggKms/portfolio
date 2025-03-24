@@ -37,7 +37,6 @@ function bindSignUpEvent() {
             console.log('Sign Up Response:', result);
             alert('Sign Up Successful');
             // 회원가입 성공 시 로그인 페이지로 이동
-            loadContent('/user/login');
           } else {
             const errorResult = response.json();
             console.error('Sign Up Error:', errorResult);
@@ -81,7 +80,8 @@ function bindLoginEvent() {
             const result = response.json();
             console.log('Login Response:', result);
             alert('Login Successful');
-            // 로그인 성공 시 추가 동작
+            // showContent활용 로그인탭으로 전환
+            // showContent('login');
           } else {
             const errorResult = response.json();
             console.error('Login Error:', errorResult);

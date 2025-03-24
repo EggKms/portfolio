@@ -1,4 +1,5 @@
-// import loadContent from './loadContent.js';
+import loadContent from './loadContent';
+
 document.addEventListener('DOMContentLoaded', () => {
   console.log('DOM loaded');
 
@@ -7,24 +8,19 @@ document.addEventListener('DOMContentLoaded', () => {
     link.addEventListener('click', (event) => {
       event.preventDefault();
       const target = event.target as HTMLElement;
+      // showContent(target.id.split('/')[1]);
       loadContent(target.id);
     });
   });
 });
 
-function loadContent(id: string) {
-  const contentDiv = document.getElementById('content');
-  fetch(`/${id}`)
-    .then((response) => response.text())
-    .then((data) => {
-      if (contentDiv) {
-        contentDiv.innerHTML = data;
-      }
-    })
-    .catch((error) => {
-      if (contentDiv) {
-        contentDiv.innerHTML = '현재 구현되어있지않습니다';
-      }
-      console.error('Error', error);
-    });
-}
+// function showContent(id: string) {
+//   const sections = document.querySelectorAll('.content-section');
+//   sections.forEach((section) => {
+//     if (section.id === id) {
+//       section.classList.add('active');
+//     } else {
+//       section.classList.remove('active');
+//     }
+//   });
+// }

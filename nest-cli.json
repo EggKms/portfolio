@@ -12,9 +12,13 @@
       {
         "include": "./public/**/*",
         "outDir": "./dist"
+      },
+      {
+        "include": "./views/**/*.hbs",
+        "outDir": "./dist"
       }
     ],
     "watchAssets": true
   }
-  }
+}
  

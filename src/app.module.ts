@@ -1,8 +1,6 @@
 import { Module, MiddlewareConsumer, RequestMethod } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { ServeStaticModule } from '@nestjs/serve-static';
-import { join } from 'path';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { BoardController } from './board/board.controller';
@@ -14,6 +12,8 @@ import { HeaderModule } from './header/header.module';
 import { UserModule } from './user/user.module';
 import { LoggerMiddleware } from './middleware/logger.middleware';
 import configuration from './config/configuration';
+import { join } from 'path';
+import { ServeStaticModule } from '@nestjs/serve-static';
 @Module({
   imports: [
     TypeOrmModule.forRootAsync({
@@ -37,7 +37,8 @@ import configuration from './config/configuration';
       ignoreEnvFile: true,
     }),
     ServeStaticModule.forRoot({
-      rootPath: join(__dirname, '..', 'dist', 'public'),
+      // rootPath: join(__dirname, '..', 'dist', 'public'), // 기본 nest 동작
+      // rootPath: join(__dirname, '..', 'dist', 'src', 'public'), // webPack nest 동작
     }),
     HeaderModule,
     UserModule,

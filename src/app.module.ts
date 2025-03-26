@@ -37,7 +37,7 @@ import { ServeStaticModule } from '@nestjs/serve-static';
       ignoreEnvFile: true,
     }),
     ServeStaticModule.forRoot({
-      // rootPath: join(__dirname, '..', 'dist', 'public'), // 기본 nest 동작
+      rootPath: join(__dirname, '..', 'dist', 'public'), // 기본 nest 동작
       // rootPath: join(__dirname, '..', 'dist', 'src', 'public'), // webPack nest 동작
     }),
     HeaderModule,

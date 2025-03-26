@@ -72,7 +72,7 @@ function siginUpProcess() {
           'Content-Type': 'application/json',
         },
         // body: JSON.stringify(encryptedData), // 암호화된 데이터 전송
-        body: JSON.stringify(formData), // 암호화된 데이터 전송
+        body: JSON.stringify(data), // 암호화된 데이터 전송
       });
 
       if (response.ok) {

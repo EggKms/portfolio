@@ -19,14 +19,14 @@
     // "noFallthroughCasesInSwitch": false,
     "esModuleInterop": true,
     "importHelpers": true,
-    "moduleResolution": "node",
-},
+    "moduleResolution": "node"
+  },
   "exclude": [
-    "dist"
+    "dist",
+    "src/public/*.js"
   ],
   "include": [
-    "src/**/*.ts",
-    // "src/public/loadContent.ts",
+    "src/**/*.ts"
     // "webpack.config.ts"
   ]
 }

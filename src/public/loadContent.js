@@ -1,4 +1,5 @@
-export default function loadContent(id: string) {
+// Deprecated
+function loadContent(id) {
   const contentDiv = document.getElementById('content');
   fetch(`/${id}`)
     .then((response) => response.text())
@@ -14,3 +15,15 @@ export default function loadContent(id: string) {
       console.error('Error', error);
     });
 }
+
+function tabChange(id) {
+  const extractedId = id.split('/').pop();
+  const target = document.getElementById(extractedId);
+  const tabs = document.querySelectorAll('.content-section');
+  tabs.forEach((tab) => {
+    tab.classList.remove('active');
+  });
+  target.classList.add('active');
+}
+
+export { loadContent, tabChange };

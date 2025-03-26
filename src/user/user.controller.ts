@@ -15,6 +15,7 @@ export class UserController {
 
   @Post('sign')
   async sign(@Body() createUserDto: CreateUserDto) {
+    // const createUserDto = decryptData(encryptedData, 'your-encryption-key'); // 데이터 복호화
     return this.userService.create(createUserDto);
   }
 

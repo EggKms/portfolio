@@ -1,32 +1,39 @@
-import * as path from 'path';
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-unsafe-call */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+const path = require('path');
+const webpack = require('webpack');
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 
-const config = {
-  mode: 'development', // 'mode' 옵션 추가
-  entry: './src/views/index.hbs', // 'entry' 경로 수정
+module.exports = {
+  mode: 'production',
+  entry: './src/main.ts',
   output: {
-    path: path.resolve(__dirname, './dist'),
-    filename: 'build.js',
+    filename: 'app.js',
+    path: path.resolve(__dirname, 'dist', 'src'),
+    libraryTarget: 'commonjs2',
+  },
+  resolve: {
+    // <-- 추가한 부분
+    extensions: ['.ts', '.js'],
   },
   module: {
     rules: [
       {
         test: /\.ts$/,
-        exclude: /node_modules/, // 'node_modules' 폴더 제외
         use: 'ts-loader',
-      },
-      {
-        test: /\.hbs$/,
-        use: 'handlebars-loader',
+        exclude: /node_modules/,
       },
       {
         test: /\.ya?ml$/, // 'yaml' 파일 처리
         use: 'yaml-loader',
       },
+      {
+        test: /\.hbs$/,
+        use: 'handlebars-loader',
+      },
     ],
   },
-  resolve: {
-    extensions: ['.ts', '.js', '.hbs', '.yaml', '.yml'],
-  },
+  plugins: [new webpack.ProgressPlugin(), new CleanWebpackPlugin()],
+  externalsPresets: { node: true },
 };
-
-module.exports = config;

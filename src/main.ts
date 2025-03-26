@@ -9,7 +9,11 @@ import fs from 'fs';
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
 
+  // TODO app.module 과 나중에 config 로 합칠 예정
   app.setBaseViewsDir(join(__dirname, '..', 'src', 'views'));
+  // app.setBaseViewsDir(join(__dirname, '..', 'src', 'views')); // webpack
+  app.useStaticAssets(join(__dirname, '..', 'dist', 'public')); // 기본 nest 동작
+  // app.useStaticAssets(join(__dirname, '..', 'src', 'public')); //webpack 동작
   app.setViewEngine('hbs');
 
   // Handlebars partials 디렉토리 설정

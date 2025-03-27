@@ -16,7 +16,13 @@ export class UserController {
   @Post('sign')
   async sign(@Body() createUserDto: CreateUserDto) {
     // const createUserDto = decryptData(encryptedData, 'your-encryption-key'); // 데이터 복호화
-    return this.userService.create(createUserDto);
+    // 기존 사용자 있는지 검증식
+    if (await this.userService.findOne(createUserDto.sign_email)) {
+      return { status: 'error', message: '이미 가입된 사용자입니다.' };
+    }
+    // 사용자 생성
+    await this.userService.create(createUserDto);
+    return { status: 'success', message: '가입이 완료되었습니다.' };
   }
 
   @Get('login')
@@ -28,5 +34,9 @@ export class UserController {
   @Post('login')
   async login(@Body() loginUserDto: LoginUserDto) {
     return this.userService.login(loginUserDto);
+  }
+
+  findOne(email: string) {
+    return this.userService.findOne(email);
   }
 }

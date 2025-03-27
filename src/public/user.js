@@ -1,6 +1,5 @@
 import { loadContent, tabChange } from './loadContent.js';
 import { validateSignUp } from './validate.js';
-// import { encryptData, generateKey } from './encdec.js'; // 암호화 함수 임포트
 
 document.addEventListener('DOMContentLoaded', () => {
   bindEventsToDynamicContent();
@@ -30,14 +29,14 @@ function bindEvent() {
     });
   }
 
-  const generateKeyBtn = document.querySelector('button[id="generateKey"]');
-  if (generateKeyBtn) {
-    generateKeyBtn.addEventListener('click', (event) => {
-      event.preventDefault();
-      const key = generateKeyTest();
-      alert('Generated Key: ' + key);
-    });
-  }
+  // const generateKeyBtn = document.querySelector('button[id="generateKey"]');
+  // if (generateKeyBtn) {
+  //   generateKeyBtn.addEventListener('click', (event) => {
+  //     event.preventDefault();
+  //     const key = generateKeyTest();
+  //     alert('Generated Key: ' + key);
+  //   });
+  // }
 }
 
 function siginUpProcess() {
@@ -62,7 +61,7 @@ function siginUpProcess() {
       data[key] = value;
     });
 
-    // 데이터를 암호화합니다.
+    // // 데이터를 암호화합니다.
     // const encryptedData = encryptData(data, 'your-encryption-key');
 
     try {
@@ -76,15 +75,16 @@ function siginUpProcess() {
       });
 
       if (response.ok) {
-        const result = response.json();
+        const result = await response.json(); // await 추가
         console.log('Sign Up Response:', result);
-        alert('Sign Up Successful');
+        alert(result.message);
         // 회원가입 성공 시 로그인 페이지로 이동
         // loadContent('/user/login');
         tabChange('user/login');
       } else {
-        const errorResult = response.json();
+        const errorResult = await response.json(); // await 추가
         console.error('Sign Up Error:', errorResult);
+        alert(errorResult.message);
       }
     } catch (error) {
       console.error('Error during sign up:', error);
@@ -95,10 +95,8 @@ function siginUpProcess() {
   });
 }
 
-function loginProcess(){
-  const login = document.querySelector(
-    'form[action="/user/login"]',
-  );
+function loginProcess() {
+  const login = document.querySelector('form[action="/user/login"]');
 
   (async () => {
     const formData = new FormData(login);
@@ -117,13 +115,21 @@ function loginProcess(){
       });
 
       if (response.ok) {
-        const result = response.json();
+        const result = await response.json();
         console.log('Login Response:', result);
-        alert('Login Successful');
-        // 로그인 성공 시 추가 동작
+
+        // JWT 저장
+        if (result.token) {
+          localStorage.setItem('authToken', result.token);
+          alert('Login Successful');
+          // 로그인 성공 시 추가 동작
+        } else {
+          alert('Login failed: No token received');
+        }
       } else {
-        const errorResult = response.json();
+        const errorResult = await response.json();
         console.error('Login Error:', errorResult);
+        alert(errorResult.message || 'Login Failed');
       }
     } catch (error) {
       console.error('Error during login:', error);
@@ -132,7 +138,22 @@ function loginProcess(){
   })().catch((error) => {
     console.error('Unexpected error during login:', error);
   });
+}
 
+// 인증된 요청을 보내는 함수
+async function authenticatedFetch(url, options = {}) {
+  const token = localStorage.getItem('authToken');
+  if (!token) {
+    alert('No authentication token found. Please log in.');
+    return;
+  }
+
+  const headers = {
+    ...options.headers,
+    Authorization: `Bearer ${token}`,
+  };
+
+  return fetch(url, { ...options, headers });
 }
 
 function generateKeyTest() {

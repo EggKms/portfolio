@@ -22,6 +22,10 @@ function tabChange(id) {
   const tabs = document.querySelectorAll('.content-section');
   tabs.forEach((tab) => {
     tab.classList.remove('active');
+    const inputs = tab.querySelectorAll('input');
+    inputs.forEach((input) => {
+      input.value = ''; // 입력 필드 초기화
+    });
   });
   target.classList.add('active');
 }

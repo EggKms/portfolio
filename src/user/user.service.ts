@@ -31,4 +31,12 @@ export class UserService {
       return 'Invalid credentials';
     }
   }
+
+  async findOne(email: string): Promise<boolean> {
+    const user = await this.userRepository.findOne({ where: { email } });
+    if (!user) {
+      return false;
+    }
+    return true;
+  }
 }

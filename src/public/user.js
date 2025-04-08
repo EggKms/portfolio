@@ -28,15 +28,6 @@ function bindEvent() {
       loginProcess();
     });
   }
-
-  // const generateKeyBtn = document.querySelector('button[id="generateKey"]');
-  // if (generateKeyBtn) {
-  //   generateKeyBtn.addEventListener('click', (event) => {
-  //     event.preventDefault();
-  //     const key = generateKeyTest();
-  //     alert('Generated Key: ' + key);
-  //   });
-  // }
 }
 
 function siginUpProcess() {
@@ -80,7 +71,9 @@ function siginUpProcess() {
         alert(result.message);
         // 회원가입 성공 시 로그인 페이지로 이동
         // loadContent('/user/login');
-        tabChange('user/login');
+        // tabChange('user/login');
+
+
       } else {
         const errorResult = await response.json(); // await 추가
         console.error('Sign Up Error:', errorResult);
@@ -140,21 +133,7 @@ function loginProcess() {
   });
 }
 
-// 인증된 요청을 보내는 함수
-async function authenticatedFetch(url, options = {}) {
-  const token = localStorage.getItem('authToken');
-  if (!token) {
-    alert('No authentication token found. Please log in.');
-    return;
-  }
 
-  const headers = {
-    ...options.headers,
-    Authorization: `Bearer ${token}`,
-  };
-
-  return fetch(url, { ...options, headers });
-}
 
 function generateKeyTest() {
   return crypto.randomBytes(32).toString('hex');

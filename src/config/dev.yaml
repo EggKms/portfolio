@@ -2,6 +2,12 @@ http:
   host: 'localhost'
   port: 8080
 
+jwt:
+  secret: 'secret'
+  algorithm: 'HS256'
+  signOptions:
+    expiresIn: '60s'
+
 db:
   postgres:
     url: 'localhost'

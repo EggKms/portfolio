@@ -14,6 +14,8 @@ import { LoggerMiddleware } from './middleware/logger.middleware';
 import configuration from './config/configuration';
 import { join } from 'path';
 import { ServeStaticModule } from '@nestjs/serve-static';
+import { AuthModule } from './auth/auth.module';
+
 @Module({
   imports: [
     TypeOrmModule.forRootAsync({
@@ -42,6 +44,7 @@ import { ServeStaticModule } from '@nestjs/serve-static';
     }),
     HeaderModule,
     UserModule,
+    AuthModule,
   ],
   controllers: [AppController, BoardController, HeaderController],
   providers: [AppService, BoardService, HeaderService],

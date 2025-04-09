@@ -7,18 +7,18 @@
     "assets": [
       {
         "include": "./config/*.yaml",
-        "outDir": "./dist"
+        "outDir": "./dist/src"
       },
       {
         "include": "./public/**/*",
-        "outDir": "./dist"
+        "outDir": "./dist/src"
       },
       {
-        "include": "./views/**/*.hbs",
-        "outDir": "./dist"
+        "include": "./views/**/*",
+        "outDir": "./dist/src"
       }
     ],
     "watchAssets": true
   }
-}
+  }
  

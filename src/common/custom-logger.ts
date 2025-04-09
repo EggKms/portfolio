@@ -1,4 +1,3 @@
-/* eslint-disable no-useless-escape */
 import { Logger } from '@nestjs/common';
 
 function getCallerInfo(): string {

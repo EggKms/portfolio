@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>My NestJS App</title>
+  <title>portpolio</title>
   <link rel="stylesheet" type="text/css" href="styles.css">
   <script type="module" src="index.js"></script>
   <script type="module" src="user.js"></script>
@@ -9,27 +9,33 @@
 <body>
   <header>
     <div class="header-left">
-      <h1>My NestJS App</h1>
+      <h1>환영합니다</h1>
     </div>
     <div class="header-center">
       <ul class="nav-list">
-        <li><a href="#" id="header/home">Home</a></li>
-        <li><a href="#" id="header/about">About</a></li>
-        <li><a href="#" id="header/contact">Contact</a></li>
+        <li><a href="#" id="header/home" class="tab">Home</a></li>
+        <li><a href="#" id="header/about" class="tab">About</a></li>
+        <li><a href="#" id="header/contact" class="tab">Contact</a></li>
       </ul>
     </div>
     <div class="header-right">
-      <a href="#" id="user/login">Login</a>
-      <a href="#" id="user/sign">Sign Up</a>
+      <div id="login-links" style="display: block;">
+        <a href="#" id="user/login" class="tab">Login</a>
+        <a href="#" id="user/sign" class="tab">Sign Up</a>
+      </div>
+      <div id="logout-links" style="display: none;">
+        <a href="#" id="user/mypage" class="tab">My Page</a>
+        <a href="#" id="user/logout">Log Out</a> {{!-- exclude 클래스 추가 --}}
+      </div>
     </div>
   </header>
   <div class="main-container">
     <div class="sidebar">
       <h2>Sidebar</h2>
-      <ul>
-        <li><a href="#">Link 1</a></li>
-        <li><a href="#">Link 2</a></li>
-        <li><a href="#">Link 3</a></li>
+      <ul class="side-nav-list">
+        <li><a href="#" id="header/home" class="tab">Home</a></li>
+        <li><a href="#" id="header/about" class="tab">About</a></li>
+        <li><a href="#" id="header/contact" class="tab">Contact</a></li>
       </ul>
     </div>
     <div class="content" id="content">
@@ -38,6 +44,7 @@
       {{> contact }}
       {{> login }}
       {{> sign }}
+      {{> mypage }} {{!-- My Page 콘텐츠 추가 --}}
     </div>
   </div>
 </body>

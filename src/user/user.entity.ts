@@ -28,4 +28,11 @@ export class User {
 
   @Column({ default: 0 })
   deleteYn: number;
+
+  @Column({ nullable: true })
+  refreshToken: string;
+
+  @Column({ type: 'timestamp', nullable: true })
+  refreshTokenExpiresAt: Date;
+  id: any;
 }

@@ -16,9 +16,10 @@ function loadContent(id) {
     });
 }
 
-function tabChange(id) {
+async function tabChange(id) {
   const extractedId = id.split('/').pop();
   const target = document.getElementById(extractedId);
+  // console.log('target', target);
   const tabs = document.querySelectorAll('.content-section');
   tabs.forEach((tab) => {
     tab.classList.remove('active');
@@ -28,6 +29,29 @@ function tabChange(id) {
     });
   });
   target.classList.add('active');
+
+  // 헤더 업데이트
+  updateHeaderBasedOnSession();
 }
 
-export { loadContent, tabChange };
+function updateHeaderBasedOnSession() {
+  const isAuthenticated = sessionStorage.getItem('isAuthenticated') === 'true';
+  toggleAuthLinks(isAuthenticated);
+}
+
+function toggleAuthLinks(authenticated) {
+  const loginLinks = document.getElementById('login-links'); // Login/Sign Up 영역
+  const logoutLinks = document.getElementById('logout-links'); // My Page/Log Out 영역
+
+  if (authenticated) {
+    // 로그인 상태
+    loginLinks.style.display = 'none';
+    logoutLinks.style.display = 'block';
+  } else {
+    // 비로그인 상태
+    loginLinks.style.display = 'block';
+    logoutLinks.style.display = 'none';
+  }
+}
+
+export { loadContent, tabChange, updateHeaderBasedOnSession };

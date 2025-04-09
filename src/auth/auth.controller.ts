@@ -17,7 +17,7 @@ export class AuthController {
     if (!user) {
       return { message: 'Invalid credentials' };
     }
-    return this.authService.login(user);
+    return this.authService.makeToken(user);
   }
 
   @UseGuards(JwtAuthGuard)

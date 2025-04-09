@@ -8,6 +8,11 @@ jwt:
   signOptions:
     expiresIn: '60s'
 
+crtypto:
+  ENCRYPTION_KEY: 'your-encryption-key'
+  IV_LENGTH: 16
+  ENCRYPTION_ALGORITHM: 'aes-256-cbc'
+
 db:
   postgres:
     url: 'localhost'

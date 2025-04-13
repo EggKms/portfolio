@@ -1,5 +1,6 @@
 import { loadContent, tabChange, updateHeaderBasedOnSession } from './loadContent.js';
 import { validateSignUp } from './validate.js';
+import { hashData } from './encdec.js'; // 추가된 import
 
 document.addEventListener('DOMContentLoaded', () => {
   bindEventsToDynamicContent();
@@ -35,9 +36,15 @@ function bindEvent() {
       logoutProcess();
     });
   }
+
+  const generateKeyBtn = document.querySelector('button[id="generateKey"]');
+  if (generateKeyBtn) {
+    generateKeyBtn.addEventListener('click', (event) => {
+      event.preventDefault();
+      generateKey();
+    });
+  }
 }
-
-
 
 function siginUpProcess() {
   const signUp = document.querySelector('form[action="/user/sign"]');
@@ -52,10 +59,11 @@ function siginUpProcess() {
   }
 
   (async () => {
+    const hashedPassword = await hashData(signPassword); // 비밀번호 암호화
     const formData = new FormData(signUp);
     const data = {};
     formData.forEach((value, key) => {
-      data[key] = value;
+      data[key] = key === 'sign_password' ? hashedPassword : value; // 암호화된 비밀번호 사용
     });
 
     try {
@@ -91,12 +99,15 @@ function siginUpProcess() {
 
 function loginProcess() {
   const login = document.querySelector('form[action="/user/login"]');
+  const loginId = document.getElementById('login_id').value;
+  const password = document.getElementById('login_password').value;
 
   (async () => {
+    const hashedPassword = await hashData(password); // 비밀번호 암호화
     const formData = new FormData(login);
     const data = {};
     formData.forEach((value, key) => {
-      data[key] = value;
+      data[key] = key === 'login_password' ? hashedPassword : value; // 암호화된 비밀번호 사용
     });
 
     try {
@@ -201,3 +212,4 @@ async function refreshAccessToken() {
 function generateKeyTest() {
   return crypto.randomBytes(32).toString('hex');
 }
+

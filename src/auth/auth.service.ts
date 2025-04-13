@@ -2,6 +2,7 @@
 /* eslint-disable @typescript-eslint/require-await */
 /* eslint-disable prettier/prettier */
 import { Injectable, Logger } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import { UserService } from 'src/user/user.service';
 
@@ -11,6 +12,7 @@ export class AuthService {
   constructor(
     private readonly jwtService: JwtService,
     private readonly userService: UserService, // UserService 주입
+    private readonly configService: ConfigService, // ConfigService 주입
   ) {}
 
   // 유저 검증 로직
@@ -28,14 +30,9 @@ export class AuthService {
     const payload = { userEmail: user.email, userId: user.userId };
     
     // const accessToken = this.jwtService.sign(payload, { expiresIn: '1m' });
-    const accessToken = this.jwtService.sign(payload, { expiresIn: '1d' });
-    const refreshToken = this.jwtService.sign(payload, { expiresIn: '7d' });
-
-    // refreshToken 암호화 및 DB 저장
-    // TODO: 암호화 추후 진행
-    // const encryptedToken = encrypt(refreshToken);
-    // await this.userService.saveRefreshToken(user.userId, encryptedToken, new Date(Date.now() + 7 * 24 * 60 * 60 * 1000)); // 7일 만료
-    
+    ;
+    const accessToken = this.jwtService.sign(payload, { expiresIn: this.configService.get<string>('jwt.accessSignOptions.expiresIn') });
+    const refreshToken = this.jwtService.sign(payload, { expiresIn: this.configService.get<string>('jwt.refreshSignOptions.expiresIn') });
 
     return {
       access_token: accessToken,
@@ -45,6 +42,7 @@ export class AuthService {
 
   // refresh_token을 사용해 새로운 access_token 발급
   async refreshToken(refreshToken: string) {
+    this.logger.debug(`Received refresh token: ${refreshToken}`);
     try {
       const decoded = this.jwtService.verify(refreshToken); // Refresh Token 검증
       this.logger.debug('Decoded refresh token:', decoded);
@@ -62,7 +60,14 @@ export class AuthService {
       return { access_token: newAccessToken };
     } catch (error) {
       this.logger.error('Failed to refresh access token:', error.message);
-      throw new Error('Invalid refresh token: ' + error.message);
+      this.logger.error('Invalid refresh token:', error.message);
+      throw error;
     }
+  }
+
+  decodeTokenToId(token: string) {
+    const decoded = this.jwtService.decode(token); // JWT payload 디코딩
+    const userId = decoded?.userId as string; // 사용자 ID 추출
+    return userId;
   }
 }

@@ -5,10 +5,19 @@ import path, { join } from 'path';
 import { Logger } from '@nestjs/common';
 import { handlebars } from 'hbs';
 import fs from 'fs';
-import { UnauthorizedExceptionFilter } from './common/filters/http-exception.filter';
+import { HttpExceptionFilter } from './common/filters/http-exception.filter';
+import { sqlInjectionMiddleware } from './middlewares/sql-injection.middleware';
+import express from 'express';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
+
+  // JSON Body Parsing 활성화
+  app.use(express.json());
+  app.use(express.urlencoded({ extended: true }));
+
+  // SQL Injection 방어 미들웨어 등록
+  app.use(sqlInjectionMiddleware);
 
   app.setBaseViewsDir(join(__dirname, '..', 'src', 'views'));
   app.setViewEngine('hbs');
@@ -26,7 +35,7 @@ async function bootstrap() {
   });
 
   // 커스텀 예외 필터 등록
-  app.useGlobalFilters(new UnauthorizedExceptionFilter());
+  app.useGlobalFilters(new HttpExceptionFilter());
 
   const port = process.env.PORT ?? 3000;
   Logger.debug(`process.env.PORT: ${process.env.PORT}`, 'Bootstrap');

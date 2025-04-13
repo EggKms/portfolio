@@ -40,6 +40,7 @@ export class UserController {
     },
     @Res() res: Response,
   ) {
+    this.logger.debug('signData : ' + JSON.stringify(signData));
     // const createUserDto = decryptData(encryptedData, 'your-encryption-key'); // 데이터 복호화
     // 기존 사용자 있는지 검증식
     if (await this.userService.findUserByEmail(signData.sign_email)) {
@@ -176,6 +177,7 @@ export class UserController {
 
   @Post('refresh')
   async refreshAccessToken(@Res() res: Response) {
+    this.logger.debug('Refreshing access token...');
     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     const refreshToken = res.req.cookies['refreshToken']; // 쿠키에서 refreshToken 확인
 

@@ -5,8 +5,10 @@ http:
 jwt:
   secret: 'secret'
   algorithm: 'HS256'
-  signOptions:
-    expiresIn: '60s'
+  accessSignOptions:
+    expiresIn: '1d'
+  refreshSignOptions:
+    expiresIn: '7d'
 
 crtypto:
   ENCRYPTION_KEY: 'your-encryption-key'

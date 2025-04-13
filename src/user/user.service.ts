@@ -89,6 +89,7 @@ export class UserService {
     userId: string,
     refreshToken: string,
   ): Promise<boolean> {
+    this.logger.debug('validateRefreshToken called');
     const user = await this.userRepository.findOne({ where: { userId } });
     if (user && user.refreshToken && user.refreshTokenExpiresAt) {
       // 암호화 추후진행

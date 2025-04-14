@@ -1,29 +1,16 @@
-function generateKey() {
-  return crypto.randomBytes(32).toString('hex');
+async function hashData(data) {
+  const encoder = new TextEncoder();
+  const encodedData = encoder.encode(data);
+
+  // SHA-256 해시 생성
+  const hashBuffer = await crypto.subtle.digest('SHA-256', encodedData);
+
+  // ArrayBuffer를 16진수 문자열로 변환
+  const hashArray = Array.from(new Uint8Array(hashBuffer));
+  const hashHex = hashArray.map((byte) => byte.toString(16).padStart(2, '0')).join('');
+
+  return hashHex;
 }
 
-function hashData(data) {
-  const hash = crypto.createHash('sha256');
-  hash.update(data);
-  return hash.digest('hex');
-}
 
-function encryptData(data, key) {
-  const iv = crypto.randomBytes(16);
-  const cipher = crypto.createCipheriv('aes-256-cbc', Buffer.from(key), iv);
-  let encrypted = cipher.update(JSON.stringify(data), 'utf8', 'hex');
-  encrypted += cipher.final('hex');
-  return iv.toString('hex') + ':' + encrypted;
-}
-
-function decryptData(encryptedData, key) {
-  const textParts = encryptedData.split(':');
-  const iv = Buffer.from(textParts.shift(), 'hex');
-  const encryptedText = Buffer.from(textParts.join(':'), 'hex');
-  const decipher = crypto.createDecipheriv('aes-256-cbc', Buffer.from(key), iv);
-  let decrypted = decipher.update(encryptedText, 'hex', 'utf8');
-  decrypted += decipher.final('utf8');
-  return JSON.parse(decrypted);
-}
-
-export { generateKey, hashData, encryptData, decryptData };
+export { hashData};

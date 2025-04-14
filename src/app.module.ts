@@ -10,7 +10,7 @@ import { HeaderController } from './header/header.controller';
 import { HeaderService } from './header/header.service';
 import { HeaderModule } from './header/header.module';
 import { UserModule } from './user/user.module';
-import { LoggerMiddleware } from './middleware/logger.middleware';
+import { LoggerMiddleware } from './middlewares/logger.middleware';
 import configuration from './config/configuration';
 import { join } from 'path';
 import { ServeStaticModule } from '@nestjs/serve-static';

@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unsafe-return */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import {
   Injectable,
@@ -9,17 +8,20 @@ import { AuthGuard } from '@nestjs/passport';
 import { AuthService } from './auth.service';
 import { Response, Request } from 'express';
 import { CustomLogger } from 'src/common/custom-logger';
-import { TokenExpiredError } from 'jsonwebtoken';
+import { UserService } from 'src/user/user.service';
 
 @Injectable()
 export class JwtAuthGuard extends AuthGuard('jwt') {
   private readonly logger = new CustomLogger(JwtAuthGuard.name);
-
-  constructor(private readonly authService: AuthService) {
+  constructor(
+    private readonly authService: AuthService,
+    private readonly userService: UserService,
+  ) {
     super();
   }
 
   async canActivate(context: ExecutionContext) {
+    this.logger.debug('canActivate called in JwtAuthGuard');
     const request = context.switchToHttp().getRequest<Request>();
     const response = context.switchToHttp().getResponse<Response>();
 
@@ -30,42 +32,62 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
       this.logger.error(`Authentication error: ${error.name}`);
       this.logger.error(`Authentication error: ${error.message}`);
 
-      // TokenExpiredError 감지 및 처리
-      if (
-        error instanceof TokenExpiredError ||
-        error.message === 'jwt expired'
-      ) {
-        this.logger.warn('Access token expired. Attempting to refresh token.');
-
-        const refreshToken = request.cookies['refreshToken'];
-        if (!refreshToken) {
-          this.logger.error('Refresh token is missing.');
-          throw new UnauthorizedException('Refresh token is missing.');
+      // UnauthorizedException 먼저 처리
+      if (error instanceof UnauthorizedException) {
+        this.logger.warn('UnauthorizedException detected.');
+        // 여기서 refreshToken 로직 처리 후 아닌건 다시 unauthorized 처리
+        const cookieHeader = request?.headers?.cookie;
+        if (!cookieHeader) {
+          this.logger.debug('No cookies found in request headers.');
+          return false;
         }
 
+        // 쿠키 문자열에서 authToken 추출
+        const cookies = cookieHeader.split(';').reduce(
+          (acc, cookie) => {
+            const [key, value] = cookie.trim().split('=');
+            acc[key] = value;
+            return acc;
+          },
+          {} as Record<string, string>,
+        );
+
+        //request에서 user 정보 추출
+        const userId = this.authService.decodeTokenToId(cookies['authToken']);
+
+        // userId로 refreshToken 가져오기
+        const user = await this.userService.getUserById(userId);
+        if (!user) {
+          this.logger.warn('User not found for refresh token.');
+          return false;
+        }
+        const refreshToken = user.refreshToken;
+        // Refresh Token을 사용해 새로운 Access Token 발급
         try {
-          // Refresh Token을 사용해 새로운 Access Token 발급
           const newAccessToken =
             await this.authService.refreshToken(refreshToken);
           response.cookie('authToken', newAccessToken.access_token, {
             httpOnly: true,
             secure: true,
             sameSite: 'strict',
-            maxAge: 15 * 60 * 1000, // 15분 만료
+            maxAge: 7 * 24 * 60 * 60 * 1000, // 15분 만료
           });
-
           this.logger.log('Access token refreshed successfully.');
+          // 사용자 정보를 request.user에 저장
+          request.user = {
+            userId: user.userId,
+            email: user.email,
+          };
           return true;
-        } catch (refreshError) {
-          this.logger.error(
-            `Failed to refresh access token: ${refreshError.message}`,
+        } catch (err) {
+          this.logger.error('Failed to refresh access token:', err.name);
+          this.logger.error('Invalid refresh token:', err.message);
+          throw new UnauthorizedException(
+            'Failed to refresh access token. Invalid refresh token.',
           );
-          throw new UnauthorizedException('Failed to refresh access token.');
         }
       }
-
-      // 다른 인증 실패 처리
-      throw new UnauthorizedException('Authentication failed.');
+      throw new UnauthorizedException('Invalid or missing token.');
     }
   }
 }

@@ -21,6 +21,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     super({
       jwtFromRequest: ExtractJwt.fromExtractors([
         (request) => {
+          this.logger.debug('Extracting JWT from request...');
           // Access Token을 request.headers.cookie에서 추출
           const cookieHeader = request?.headers?.cookie;
           if (!cookieHeader) {

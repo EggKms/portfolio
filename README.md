@@ -1,5 +1,7 @@
 # portfolio
-## 간단한 홈페이지 구축 환경입니다.
-### Nest Framework 를 사용했습니다.
+## Nest Framework 를 사용한 홈페이지 구축 환경입니다.
 
-사용자관리, 게시판, 로그시스템 먼저 적용 예정입니다.
+Framework : nestFrameWork
+user 관리는 cookie와 jwt, passport 사용.
+DB : mariaDb
+

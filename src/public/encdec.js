@@ -1,18 +1,15 @@
-import CryptoJS from 'crypto-js';
-
 async function hashData(data) {
   if (!window.crypto || !window.crypto.subtle) {
-    // crypto.subtle이 지원되지 않는 경우 npm CryptoJS 사용
+    // crypto.subtle이 지원되지 않는 경우 CDN CryptoJS 사용
     return npmCryptoJs(data);
-  }else{
+  } else {
     return cryptoSubtle(data);
   }
-  
 }
 
 async function npmCryptoJs(data) {
-  const hash = CryptoJS.SHA256(data);
-  return hash.toString(CryptoJS.enc.Hex);
+  const hash = window.CryptoJS.SHA256(data);
+  return hash.toString(window.CryptoJS.enc.Hex);
 }
 
 async function cryptoSubtle(data) {
@@ -23,4 +20,4 @@ async function cryptoSubtle(data) {
   return hashArray.map(byte => byte.toString(16).padStart(2, '0')).join('');
 }
 
-export { hashData };
+window.hashData = hashData;
